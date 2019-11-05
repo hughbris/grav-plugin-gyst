@@ -6,8 +6,8 @@ author:
   name: Hugh Barnes
   email: dev@hubns.com
 homepage: https://github.com/hughbris/grav-plugin-sheet-storm
-demo: http://demo.yoursite.com
-keywords: grav, plugin, etc
+# demo: http://demo.yoursite.com
+keywords: grav, plugin, spreadsheet, cloud-storage, forms, google-sheets
 bugs: https://github.com/hughbris/grav-plugin-sheet-storm/issues
 docs: https://github.com/hughbris/grav-plugin-sheet-storm/blob/develop/README.md
 license: MIT
@@ -25,7 +25,6 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    text_var:
-      type: text
-      label: PLUGIN_SHEET_STORM.TEXT_VARIABLE
-      help: PLUGIN_SHEET_STORM.TEXT_VARIABLE_HELP
+
+dependencies:
+  - { name: "form" }

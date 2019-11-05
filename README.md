@@ -1,12 +1,16 @@
 # Sheet Storm Plugin
 
-**This README.md file should be modified to describe the features, installation, configuration, and general usage of this plugin.**
+The **Sheet Storm** Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
-The **Sheet Storm** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Exports form data as a row in a cloud spreadsheet
+It allows data [submitted from a form]http://github.com/getgrav/grav-plugin-form) to be saved as a row in a cloud spreadsheet. _Currently only Google Sheets is supported._
 
 ## Installation
 
 Installing the Sheet Storm plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
+
+### Dependencies
+
+This plugin requires the [Form plugin](https://github.com/getgrav/grav-plugin-form) to provide anything useful.
 
 ### GPM Installation (Preferred)
 
@@ -23,7 +27,7 @@ To install this plugin, just download the zip version of this repository and unz
 You should now have all the plugin files under
 
     /your/site/grav/user/plugins/sheet-storm
-	
+
 > NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav) and the [Error](https://github.com/getgrav/grav-plugin-error) and [Problems](https://github.com/getgrav/grav-plugin-problems) to operate.
 
 ### Admin Plugin
