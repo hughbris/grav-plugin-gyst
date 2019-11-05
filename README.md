@@ -49,6 +49,7 @@ authentication:
     -
       name: 'google_sheets'
       path: '/LOCAL_API_KEYFILE_PATH' # configure this
+```
 
 Note that if you use the admin plugin, a file with your configuration, and named sheet-storm.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
 
