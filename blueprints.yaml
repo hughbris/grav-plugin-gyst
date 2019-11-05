@@ -56,10 +56,6 @@ form:
               label: 'Local path'
               help: 'Local path to vendor API keyfile.'
               placeholder: '/localpath/to/api/keyfile.json'
-            .sheet:
-              type: text
-              label: 'Spreadsheet ID'
-              # hint: If you don't provide one, a spreadsheet will be created and saved for you.
 
 dependencies:
   - { name: "form" }
