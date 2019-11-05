@@ -25,6 +25,41 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
+    provider:
+      type: select
+      label: 'Provider'
+      text: 'Active spreadsheet cloud provider service'
+      options:
+        google_sheets: 'Google Sheets'
+      validate:
+        required: true
+    authentication:
+      type: section
+      title: 'Authentication options'
+      text: 'Optional vendor specific authentication options for spreadsheet service providers.'
+      fields:
+        authentication.providers:
+          type: list
+          label: 'Spreadsheet providers'
+          name: providers
+          min: 1
+          fields:
+            .name:
+              type: select
+              label: 'Type'
+              options:
+                google_sheets: 'Google Sheets'
+              validate:
+                required: true
+            .path:
+              type: text
+              label: 'Local path'
+              help: 'Local path to vendor API keyfile.'
+              placeholder: '/localpath/to/api/keyfile.json'
+            .sheet:
+              type: text
+              label: 'Spreadsheet ID'
+              # hint: If you don't provide one, a spreadsheet will be created and saved for you.
 
 dependencies:
   - { name: "form" }

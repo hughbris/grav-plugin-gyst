@@ -1,6 +1,8 @@
 <?php
 namespace Grav\Plugin;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
@@ -10,6 +12,8 @@ use RocketTheme\Toolbox\Event\Event;
  */
 class SheetStormPlugin extends Plugin
 {
+    protected $settings;
+
     /**
      * @return array
      *
@@ -23,7 +27,7 @@ class SheetStormPlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
@@ -37,19 +41,120 @@ class SheetStormPlugin extends Plugin
             return;
         }
 
+        $this->settings = $this->grav['config']->get('plugins.sheet-storm');
+
         // Enable the main event we are interested in
         $this->enable([
-            // 'onPageContentRaw' => ['onPageContentRaw', 0],
+            'onFormProcessed' => ['customFormActions', 0],
         ]);
     }
 
-    /**
-     * Do some work for this event, full details of events can be found
-     * on the learn site: http://learn.getgrav.org/plugins/event-hooks
-     *
-     * @param Event $e
-     */
-    public function onPageContentRaw(Event $e)
-    {
-    }
+/**
+	 * [customFormActions] Process custom form actions defined in this plugin:
+	 *
+	 * - stash_pdf: stash a PDF in the cloud
+	 *
+	 * @param Event $event
+	 * @throws \RuntimeException
+	 */
+	public function customFormActions(Event $event)	{
+		$form = $event['form'];
+		$action = $event['action'];
+
+		// stash PDF custom action
+		switch ($action) {
+			case 'sheet_row':
+				$this->saveToRow($event);
+				break;
+		}
+	}
+
+	/**
+	 * Save PDF formatted data into a cloud stash
+	 *
+	 * @param Event $event
+	 */
+	public function saveToRow(Event $event) {
+
+		$form = $event['form'];
+		$params = $event['params'];
+
+		$format = array_key_exists('dateformat', $params) ? $params['dateformat'] : 'Ymd-His-u';
+
+		if (array_key_exists('dateraw', $params) AND (bool) $params['dateraw']) {
+			$datestamp = date($format);
+		}
+		else {
+			$utimestamp = microtime(true);
+			$timestamp = floor($utimestamp);
+			$milliseconds = round(($utimestamp - $timestamp) * 1000000);
+			$datestamp = date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
+		}
+
+		$twig = $this->grav['twig'];
+		$vars = [
+			'form' => $form,
+		];
+		$twig->itemData = $form->getData(); // FIXME for default data.html template below - might work OK
+
+		$provider_options = $this->getProvider('google_sheets');
+
+		$client = new \Google_Client();
+		$client->setAuthConfig($provider_options['path']);
+		// $client->useApplicationDefaultCredentials();
+		// $client->addScope(Google_Service_Sheets_Spreadsheet::DRIVE);
+		$client->addScope(\Google_Service_Sheets::SPREADSHEETS);
+
+		$sheets = new \Google_Service_Sheets($client); // dump($sheets); exit;
+		$spreadsheet = new \Google_Service_Sheets_Spreadsheet([
+			'properties' => [
+				'title' => 'FOOTESTFIXME'
+			]
+		]);
+		// $sheets->spreadsheets->create($spreadsheet);
+
+		$ssid = $provider_options['sheet'];
+		// dump($sheets->spreadsheets->get($ssid)); exit;
+
+		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
+
+		$rowBody = new \Google_Service_Sheets_ValueRange([
+			// 'range' => $updateRange,
+			// 'majorDimension' => 'ROWS',
+			'values' => [
+				['row1', 'col1', 'col2'],
+				['row2', 'col1', 'col2'],
+				['row3', 'col1', 'col2'],
+			]
+		]);
+
+		$result = $sheets->spreadsheets_values->append(
+			$ssid,
+			'Sheet1',
+			$rowBody,
+			[
+				'valueInputOption' => 'RAW', // 'USER_ENTERED']
+				'insertDataOption' => 'INSERT_ROWS',
+			]
+
+		);
+		printf("%d rows appended.", $result->getUpdates()->getUpdatedRows());
+		dump($sheets->spreadsheets->get($ssid)); exit;
+	}
+
+	private function getProvider($vendor=NULL) {
+		if (empty($vendor)) {
+			return $this->settings['authentication']['providers'];
+		}
+		else {
+			foreach($this->settings['authentication']['providers'] as $provider) {
+				if ($provider['name'] == $vendor) {
+					return $provider;
+				}
+			}
+		}
+		// still here? handle not found ..
+		return; # TODO
+	}
+
 }
