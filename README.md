@@ -8,6 +8,8 @@ It allows data [submitted from a form]http://github.com/getgrav/grav-plugin-form
 
 Installing the Sheet Storm plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
 
+> After either installation method, it is important to install the libraries required for your cloud spreadsheet provider. Presently only Google Sheets is supported, so please move into your plugin folder in a shell and type: `composer require google/apiclient:^2.0`. _(You need [PHP composer](https://getcomposer.org) for that to work, too.)_
+
 ### Dependencies
 
 This plugin requires the [Form plugin](https://github.com/getgrav/grav-plugin-form) to provide anything useful.
