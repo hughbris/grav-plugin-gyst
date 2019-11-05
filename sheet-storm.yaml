@@ -4,4 +4,3 @@ authentication:
     -
       name: 'google_sheets'
       path: '/LOCAL_API_KEYFILE_PATH' # configure this
-      # sheet: 'YOUR_SPREADSHEET_ID' # new one will be created and saved if you don't specify, and error if it doesn't exist!

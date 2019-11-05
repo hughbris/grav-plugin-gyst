@@ -44,19 +44,31 @@ Here is the default configuration and an explanation of available options:
 
 ```yaml
 enabled: true
-```
+authentication:
+  providers:
+    -
+      name: 'google_sheets'
+      path: '/LOCAL_API_KEYFILE_PATH' # configure this
 
 Note that if you use the admin plugin, a file with your configuration, and named sheet-storm.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
 
 ## Usage
 
-**Describe how to use the plugin.**
+After configuring the plugin, add an action to your forms where you want to store data as a cloud spreadsheet row.
+
+```yaml
+    process: # parent property, included as context
+        - sheet_row:
+            sheet: 'YOUR_SPREADSHEET_ID'
+```
 
 ## Credits
 
-**Did you incorporate third-party code? Want to thank somebody?**
+I will credit in a later commit #TODO.
+
+This plugin comes out a [discussion on Grav Community Forum](https://discourse.getgrav.org/t/email-form-and-google-sheet/9586).
 
 ## To Do
 
-- [ ] Future plans, if any
+- [ ] Make this better
 

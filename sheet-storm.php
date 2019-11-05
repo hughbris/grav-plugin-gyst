@@ -113,7 +113,7 @@ class SheetStormPlugin extends Plugin
 		]);
 		// $sheets->spreadsheets->create($spreadsheet);
 
-		$ssid = $provider_options['sheet'];
+		$ssid = $params['sheet'];
 		// dump($sheets->spreadsheets->get($ssid)); exit;
 
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
