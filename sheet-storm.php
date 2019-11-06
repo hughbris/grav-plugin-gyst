@@ -115,17 +115,16 @@ class SheetStormPlugin extends Plugin
 
 		$ssid = $params['sheet'];
 		// dump($sheets->spreadsheets->get($ssid)); exit;
+		// dump($sheets->spreadsheets_values->get($ssid, 'Sheet1')); exit;
 
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
+
+		$form_values = array_values($form->value()->toArray()); // TODO: put check filters in here for usable field types
 
 		$rowBody = new \Google_Service_Sheets_ValueRange([
 			// 'range' => $updateRange,
 			// 'majorDimension' => 'ROWS',
-			'values' => [
-				['row1', 'col1', 'col2'],
-				['row2', 'col1', 'col2'],
-				['row3', 'col1', 'col2'],
-			]
+			'values' => [ $form_values ],
 		]);
 
 		$result = $sheets->spreadsheets_values->append(
