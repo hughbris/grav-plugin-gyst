@@ -44,11 +44,11 @@ Here is the default configuration and an explanation of available options:
 
 ```yaml
 enabled: true
-authentication:
-  providers:
-    -
-      name: 'google_sheets'
-      path: '/LOCAL_API_KEYFILE_PATH' # configure this
+providers:
+    google_sheets:
+        auth:
+            path: '/LOCAL_API_KEYFILE_PATH' # configure this
+        default_id: 'YOUR_DEFAULT_SPREADSHEET_ID' # optional default spreadsheet id for forms without process.sheet_row.spreadsheet
 ```
 
 Note that if you use the admin plugin, a file with your configuration, and named sheet-storm.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
@@ -60,7 +60,10 @@ After configuring the plugin, add an action to your forms where you want to stor
 ```yaml
     process: # parent property, included as context
         - sheet_row:
-            sheet: 'YOUR_SPREADSHEET_ID'
+            provider: 'google_sheets' # required
+            spreadsheet: 'YOUR_SPREADSHEET_ID' # optional, defaults to plugin config providers[provider].default_id
+            sheetname: 'YOUR_SHEET_NAME_CAN_BE_A_TWIG_EXPRESSION' # optional, defaults to form name TODO not yet implemented
+            fields: ['FIELD1','FIELD2'] # optional, defaults to everything serialisable TODO not yet implemented
 ```
 
 ## Credits

@@ -1,6 +1,6 @@
 enabled: true
-authentication:
-  providers:
-    -
-      name: 'google_sheets'
+providers:
+  google_sheets:
+    # default_id: 'YOUR_DEFAULT_SPREADSHEET_ID' # optional
+    auth:
       path: '/LOCAL_API_KEYFILE_PATH' # configure this
