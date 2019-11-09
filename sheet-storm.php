@@ -111,20 +111,6 @@ class SheetStormPlugin extends Plugin
 		$sheets = new GoogleSpreadsheetCollection($provider_options); // TODO: abstract for any supported provider
 		// dump($sheets); exit;
 
-		/*
-		$client = new \Google_Client();
-		$client->setAuthConfig($provider_options['path']);
-		// $client->useApplicationDefaultCredentials();
-		// $client->addScope(Google_Service_Sheets_Spreadsheet::DRIVE);
-		$client->addScope(\Google_Service_Sheets::SPREADSHEETS);
-
-		$sheets = new \Google_Service_Sheets($client); // dump($sheets); exit;
-		$spreadsheet = new \Google_Service_Sheets_Spreadsheet([
-			'properties' => [
-				'title' => 'FOOTESTFIXME'
-			]
-		]);
-		*/
 		// dump($sheets->spreadsheets->create($spreadsheet)); exit;
 		// try     public function modifyHeader($key, $value) # https://github.com/getgrav/grav/blob/8678f22f6bf94e0a5c862f864e5a3d06cc31dd07/system/src/Grav/Common/Page/Page.php#L487
 
@@ -132,6 +118,19 @@ class SheetStormPlugin extends Plugin
 
 		// dump($sheets->spreadsheets->get($ssid)); exit;
 		// dump($sheets->spreadsheets_values->get($ssid, 'Sheet1')); exit;
+
+		if (array_key_exists('sheetname', $params)) {
+			$sheetname = $twig->processString($params['sheetname'], $vars);
+		}
+		else {
+			$sheetname = $form['name'];
+		}
+
+		// dump($sheets->hasSheetByTitle($sheetname));
+		foreach($sheets->spreadsheets->get($ssid)->getSheets() as $s) {
+			$sheet_titles[] = $s['properties']['title'];
+		}
+		$new_sheet = (array_search($sheetname, $sheet_titles) === FALSE);
 
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
 
@@ -146,7 +145,7 @@ class SheetStormPlugin extends Plugin
 
 		$result = $sheets->spreadsheets_values->append(
 			$ssid,
-			'Sheet1',
+			$sheetname,
 			$rowBody,
 			[
 				'valueInputOption' => 'RAW', // 'USER_ENTERED']
@@ -242,5 +241,17 @@ class GoogleSpreadsheetCollection extends \Google_Service_Sheets {
 		]);
 		*/
 	}
+
+	/*
+	// TODO: object requires more data intialised
+	function hasSheetByTitle() {
+		foreach($sheets->spreadsheets->get($ssid)->getSheets() as $s) {
+			$sheet_titles[] = $s['properties']['title'];
+		}
+
+		dump($sheet_titles); exit;
+
+	}
+	*/
 
 }
