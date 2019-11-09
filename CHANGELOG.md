@@ -10,3 +10,5 @@
 
 1. [](#new)
     * Support sheet name with fallbacks
+    * Create new sheet if named sheet does not exist
+

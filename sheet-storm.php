@@ -131,6 +131,22 @@ class SheetStormPlugin extends Plugin
 			$sheet_titles[] = $s['properties']['title'];
 		}
 		$new_sheet = (array_search($sheetname, $sheet_titles) === FALSE);
+		// dump($sheet_titles);
+
+		$newSheetRequest = new \Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+			'requests' => [
+				'addSheet' => [
+					'properties' => [
+						'title' => $sheetname,
+						],
+					],
+				],
+			]);
+
+		if ($new_sheet) {
+			$sheets->spreadsheets->batchUpdate($ssid, $newSheetRequest);
+			printf("'%s' sheet added.<br/>", $sheetname);
+		}
 
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
 
@@ -153,9 +169,9 @@ class SheetStormPlugin extends Plugin
 			]
 
 		);
-		printf("%d rows appended.", $result->getUpdates()->getUpdatedRows());
-		dump($sheets->spreadsheets_values->get($ssid, 'Sheet1')['values']);
-		dump($sheets->spreadsheets->get($ssid)); exit;
+		printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
+		// dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
+		// dump($sheets->spreadsheets->get($ssid)); exit;
 	}
 
 	private function getProviderOptions($identifier=NULL) {
