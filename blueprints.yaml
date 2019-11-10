@@ -1,15 +1,15 @@
-name: Sheet Storm
-version: 0.1.0
-description: Exports form data as a row in a cloud spreadsheet
+name: Gyst
+version: 0.1.2
+description: Exports form data as a row in a cloud spreadsheet. Get Your Sheet Together, use Grav!
 icon: plug
 author:
   name: Hugh Barnes
   email: dev@hubns.com
-homepage: https://github.com/hughbris/grav-plugin-sheet-storm
+homepage: https://github.com/hughbris/grav-plugin-gyst
 # demo: http://demo.yoursite.com
 keywords: grav, plugin, spreadsheet, cloud-storage, forms, google-sheets
-bugs: https://github.com/hughbris/grav-plugin-sheet-storm/issues
-docs: https://github.com/hughbris/grav-plugin-sheet-storm/blob/develop/README.md
+bugs: https://github.com/hughbris/grav-plugin-gyst/issues
+docs: https://github.com/hughbris/grav-plugin-gyst/blob/develop/README.md
 license: MIT
 
 form:

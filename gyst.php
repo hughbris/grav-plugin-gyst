@@ -7,10 +7,10 @@ use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
- * Class SheetStormPlugin
+ * Class GystPlugin
  * @package Grav\Plugin
  */
-class SheetStormPlugin extends Plugin
+class GystPlugin extends Plugin
 {
     protected $settings;
 
@@ -41,7 +41,7 @@ class SheetStormPlugin extends Plugin
             return;
         }
 
-        $this->settings = $this->grav['config']->get('plugins.sheet-storm');
+        $this->settings = $this->grav['config']->get('plugins.gyst');
 
         // Enable the main event we are interested in
         $this->enable([
@@ -175,8 +175,8 @@ class SheetStormPlugin extends Plugin
 			'insertDataOption' => 'INSERT_ROWS',
 			]);
 		printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
-		// dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
-		// dump($sheets->spreadsheets->get($ssid)); exit;
+		dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
+		dump($sheets->spreadsheets->get($ssid)); exit;
 	}
 
 	// returns a list of form fields to be output, optionally limited to a subset of fields, and limited to serialisable fields

@@ -15,3 +15,9 @@
     * Support listing output fields by name
     * Limit fields output to serialisable fields
 
+# v0.1.2
+##  10-11-2019
+
+1. [](#improved)
+    * Rename plugin
+

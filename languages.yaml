@@ -1,4 +1,3 @@
 en:
-  PLUGIN_SHEET_STORM:
-    TEXT_VARIABLE: Text Variable
-    TEXT_VARIABLE_HELP: Text to add to the top of a page
+  PLUGIN_GYST:
+    # TEXT_VARIABLE: Text Variable
