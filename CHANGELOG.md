@@ -20,4 +20,5 @@
 
 1. [](#improved)
     * Rename plugin
+    * Update blueprint and plugin form
 

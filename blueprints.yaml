@@ -1,7 +1,7 @@
 name: Gyst
 version: 0.1.2
 description: Exports form data as a row in a cloud spreadsheet. Get Your Sheet Together, use Grav!
-icon: plug
+icon: cloud-upload
 author:
   name: Hugh Barnes
   email: dev@hubns.com
@@ -25,37 +25,32 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    provider:
-      type: select
-      label: 'Provider'
-      text: 'Active spreadsheet cloud provider service'
-      options:
-        google_sheets: 'Google Sheets'
-      validate:
-        required: true
-    authentication:
+    providers:
       type: section
-      title: 'Authentication options'
-      text: 'Optional vendor specific authentication options for spreadsheet service providers.'
+      title: 'Providers'
+      text: 'Spreadsheet cloud provider services'
       fields:
-        authentication.providers:
-          type: list
-          label: 'Spreadsheet providers'
-          name: providers
-          min: 1
+        google_sheets:
+          title: 'Google Sheets'
+          type: fieldset
+          icon: google
+          collapsible: true
           fields:
-            .name:
-              type: select
-              label: 'Type'
-              options:
-                google_sheets: 'Google Sheets'
-              validate:
-                required: true
-            .path:
+            providers.google_sheets.default_id:
               type: text
-              label: 'Local path'
-              help: 'Local path to vendor API keyfile.'
-              placeholder: '/localpath/to/api/keyfile.json'
+              label: Default Spreadsheets ID
+              help: Use this if you want your forms to add to a default spreadsheet ID, which you can override in the form actions when required.
+            providers.google_sheets.auth:
+              type: section
+              title: 'Authentication options'
+              fields:
+                providers.google_sheets.auth.path:
+                  type: text
+                  label: 'Local path'
+                  help: 'Local path to vendor API keyfile.'
+                  placeholder: '/localpath/to/api/keyfile.json'
+                  validate:
+                    required: true
 
 dependencies:
   - { name: "form" }
