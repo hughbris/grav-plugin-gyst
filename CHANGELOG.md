@@ -11,4 +11,7 @@
 1. [](#new)
     * Support sheet name with fallbacks
     * Create new sheet if named sheet does not exist
+    * Add column headers to new sheets
+    * Support listing output fields by name
+
 

@@ -116,9 +116,6 @@ class SheetStormPlugin extends Plugin
 
 		$ssid = $this->getSpreadsheetId($params, $sheets);
 
-		// dump($sheets->spreadsheets->get($ssid)); exit;
-		// dump($sheets->spreadsheets_values->get($ssid, 'Sheet1')); exit;
-
 		if (array_key_exists('sheetname', $params)) {
 			$sheetname = $twig->processString($params['sheetname'], $vars);
 		}
@@ -133,45 +130,81 @@ class SheetStormPlugin extends Plugin
 		$new_sheet = (array_search($sheetname, $sheet_titles) === FALSE);
 		// dump($sheet_titles);
 
-		$newSheetRequest = new \Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
-			'requests' => [
-				'addSheet' => [
-					'properties' => [
-						'title' => $sheetname,
-						],
-					],
-				],
-			]);
+		$fields_param = array_key_exists('fields', $params) ? $params['fields'] : [];
+		$fields = $this->getOutputFields($form['fields'], $fields_param);
 
 		if ($new_sheet) {
+			$newSheetRequest = new \Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+				'requests' => [
+					'addSheet' => [
+						'properties' => [
+							'title' => $sheetname,
+							],
+						],
+					],
+				]);
 			$sheets->spreadsheets->batchUpdate($ssid, $newSheetRequest);
+
+			// set up headings ..
+			$field_labels = $this->getFieldLabels($fields);
+			$rowBody = new \Google_Service_Sheets_ValueRange([
+				'values' => [ $field_labels ],
+			]);
+			$result = $sheets->spreadsheets_values->append($ssid, $sheetname, $rowBody,	[
+				'valueInputOption' => 'RAW', // 'USER_ENTERED']
+				'insertDataOption' => 'INSERT_ROWS',
+				]);
+
 			printf("'%s' sheet added.<br/>", $sheetname);
 		}
 
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
 
-		$form_values = array_values($form->value()->toArray()); // TODO: put check filters in here for usable field types
-		// TODO: support 'fields' action parameter if provided
+		$field_names = array_column($fields, 'name');
+		$form_values = array_values(array_intersect_key($form->value()->toArray(), array_flip($field_names))); // TODO: put check filters in here for usable field types
+		// TODO: serialise all values to strings
 
 		$rowBody = new \Google_Service_Sheets_ValueRange([
 			// 'range' => $updateRange,
 			// 'majorDimension' => 'ROWS',
 			'values' => [ $form_values ],
-		]);
+			]);
 
-		$result = $sheets->spreadsheets_values->append(
-			$ssid,
-			$sheetname,
-			$rowBody,
-			[
-				'valueInputOption' => 'RAW', // 'USER_ENTERED']
-				'insertDataOption' => 'INSERT_ROWS',
-			]
-
-		);
+		$result = $sheets->spreadsheets_values->append($ssid, $sheetname, $rowBody,	[
+			'valueInputOption' => 'RAW', // 'USER_ENTERED']
+			'insertDataOption' => 'INSERT_ROWS',
+			]);
 		printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
 		// dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
 		// dump($sheets->spreadsheets->get($ssid)); exit;
+	}
+
+	// returns a list of form fields to be output, optionally limited to a subset of fields, and limited to serialisable fields
+	private function getOutputFields($fields, $inclusions=[]) {
+		$filterList = !(empty($inclusions));
+		$ret = [];
+		foreach($fields as $field) {
+			if($this->serialisableField($field)) {
+				if( !($filterList AND !in_array($field['name'], $inclusions)) ) {
+					$ret[] = $field;
+				}
+			}
+		}
+		return $ret;
+	}
+
+	// returns best field labels for a list of fields
+	private function getFieldLabels($fields) {
+		$ret = [];
+		foreach($fields as $field) {
+			$ret[] = array_key_exists('label', $field) ? $field['label'] : $field['name'];
+		}
+		return $ret;
+	}
+
+	private function serialisableField($field) {
+		// TODO: dummy stub returning true
+		return TRUE; // FIXME
 	}
 
 	private function getProviderOptions($identifier=NULL) {
