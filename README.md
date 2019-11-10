@@ -2,7 +2,7 @@
 
 The **Gyst** (Get Your Sheet Together) Plugin is for [Grav CMS](http://github.com/getgrav/grav).
 
-It allows data [submitted from a form]http://github.com/getgrav/grav-plugin-form) to be saved as a row in a cloud spreadsheet. _Currently only Google Sheets is supported._
+It allows data [submitted from a form](http://github.com/getgrav/grav-plugin-form) to be saved as a row in a cloud spreadsheet. _Currently only Google Sheets is supported._
 
 It was originally called Sheet Storm. Github redirects the old permalink, so there should be very little inconvenience or even evidence of the old name.
 
