@@ -162,7 +162,7 @@ class SheetStormPlugin extends Plugin
 
 		$field_names = array_column($fields, 'name');
 		$form_values = array_values(array_intersect_key($form->value()->toArray(), array_flip($field_names))); // TODO: put check filters in here for usable field types
-		// TODO: serialise all values to strings
+		$form_values = array_map('json_encode', $form_values); // serialise all values to strings
 
 		$rowBody = new \Google_Service_Sheets_ValueRange([
 			// 'range' => $updateRange,
