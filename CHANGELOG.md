@@ -13,5 +13,5 @@
     * Create new sheet if named sheet does not exist
     * Add column headers to new sheets
     * Support listing output fields by name
-
+    * Limit fields output to serialisable fields
 

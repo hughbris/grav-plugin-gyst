@@ -103,7 +103,7 @@ class SheetStormPlugin extends Plugin
 		$vars = [
 			'form' => $form,
 		];
-		$twig->itemData = $form->getData(); // FIXME for default data.html template below - might work OK
+		$twig->itemData = $form->getData(); // TODO: kill if we don't need this
 
 		$provider_options = $this->getProviderOptions($params['provider']);
 		// dump($provider_options); exit;
@@ -161,7 +161,7 @@ class SheetStormPlugin extends Plugin
 		// https://www.fillup.io/post/read-and-write-google-sheets-from-php/
 
 		$field_names = array_column($fields, 'name');
-		$form_values = array_values(array_intersect_key($form->value()->toArray(), array_flip($field_names))); // TODO: put check filters in here for usable field types
+		$form_values = array_values(array_intersect_key($form->value()->toArray(), array_flip($field_names)));
 		$form_values = array_map('json_encode', $form_values); // serialise all values to strings
 
 		$rowBody = new \Google_Service_Sheets_ValueRange([
@@ -202,9 +202,11 @@ class SheetStormPlugin extends Plugin
 		return $ret;
 	}
 
+	// returns whether field is currently something the plugin can serialise as text
 	private function serialisableField($field) {
-		// TODO: dummy stub returning true
-		return TRUE; // FIXME
+		$unusable_types = ['file', 'captcha', 'honeypot', 'avatar']; // TODO: check these fied types .. conditional, display, section, spacer, tabs, tab, fieldset
+		$field_type = array_key_exists('type', $field) ? $field['type'] : 'text'; // this also works for IP pseudo-field
+		return !(in_array($field_type, $unusable_types));
 	}
 
 	private function getProviderOptions($identifier=NULL) {
