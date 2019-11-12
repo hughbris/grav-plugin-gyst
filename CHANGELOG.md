@@ -22,3 +22,9 @@
     * Rename plugin
     * Update blueprint and plugin form
 
+# v0.1.3
+##  12-11-2019
+
+1. [](#new)
+    * Add dump process/action parameter to more easily toggle debug output
+

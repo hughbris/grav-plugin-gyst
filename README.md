@@ -66,6 +66,7 @@ After configuring the plugin, add an action to your forms where you want to stor
             spreadsheet: 'YOUR_SPREADSHEET_ID' # optional, defaults to plugin config providers[provider].default_id
             sheetname: 'YOUR_SHEET_NAME_CAN_BE_A_TWIG_EXPRESSION' # optional, defaults to form name
             fields: ['FIELD1','FIELD2'] # optional, defaults to everything serialisable
+            # dump: true # mainly for developers/debugging. If not falsey, dumps info about spreadsheet and aborts form and page processing
 ```
 
 ## Credits

@@ -174,9 +174,12 @@ class GystPlugin extends Plugin
 			'valueInputOption' => 'RAW', // 'USER_ENTERED']
 			'insertDataOption' => 'INSERT_ROWS',
 			]);
-		printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
-		dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
-		dump($sheets->spreadsheets->get($ssid)); exit;
+
+		if (array_key_exists('dump', $params) AND $params['dump'] != FALSE) {
+			printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
+			dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
+			dump($sheets->spreadsheets->get($ssid)); exit;
+		}
 	}
 
 	// returns a list of form fields to be output, optionally limited to a subset of fields, and limited to serialisable fields
