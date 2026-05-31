@@ -1,3 +1,12 @@
+# v0.1.5
+##  2026-06-01
+
+1. [](#bugfix)
+    * Revert cbc8e7e, which somehow only throws an error now
+
+1. [](#improved)
+    * Move form dependency up in plugin blueprints file to where it's expected
+
 # v0.1.4
 ##  2026-06-01
 

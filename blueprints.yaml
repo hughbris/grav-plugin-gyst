@@ -1,5 +1,5 @@
 name: Gyst
-version: 0.1.4
+version: 0.1.5
 description: Exports form data as a row in a cloud spreadsheet. Get Your Sheet Together, use Grav!
 icon: cloud-upload
 author:
