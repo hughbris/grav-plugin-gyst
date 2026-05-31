@@ -1,3 +1,12 @@
+# v0.1.4
+##  2026-06-01
+
+1. [](#bugfix)
+    * Important composer dependency updates
+
+1. [](#improved)
+    * Minor metadata maintenance
+
 # v0.1.3
 ##  2019-11-12
 
