@@ -12,6 +12,9 @@ bugs: https://github.com/hughbris/grav-plugin-gyst/issues
 docs: https://github.com/hughbris/grav-plugin-gyst/blob/develop/README.md
 license: MIT
 
+dependencies:
+  - { name: "form" }
+
 form:
   validation: strict
   fields:
