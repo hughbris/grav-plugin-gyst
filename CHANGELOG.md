@@ -1,12 +1,18 @@
-# v0.1.0
-##  04-11-2019
+# v0.1.3
+##  2019-11-12
 
 1. [](#new)
-    * Initialised then tweaked from devtools command `new-theme`
-    * Support actual form data
+    * Add dump process/action parameter to more easily toggle debug output
+
+# v0.1.2
+##  2019-11-10
+
+1. [](#improved)
+    * Rename plugin
+    * Update blueprint and plugin form
 
 # v0.1.1
-##  08-11-2019
+##  2019-11-08
 
 1. [](#new)
     * Support sheet name with fallbacks
@@ -15,16 +21,9 @@
     * Support listing output fields by name
     * Limit fields output to serialisable fields
 
-# v0.1.2
-##  10-11-2019
-
-1. [](#improved)
-    * Rename plugin
-    * Update blueprint and plugin form
-
-# v0.1.3
-##  12-11-2019
+# v0.1.0
+##  2019-11-04
 
 1. [](#new)
-    * Add dump process/action parameter to more easily toggle debug output
-
+    * Initialised then tweaked from devtools command `new-theme`
+    * Support actual form data
