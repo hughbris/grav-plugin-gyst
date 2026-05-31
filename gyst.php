@@ -14,18 +14,7 @@ class GystPlugin extends Plugin
 {
     protected $settings;
 
-    /**
-     * @return array
-     *
-     * The getSubscribedEvents() gives the core a list of events
-     *     that the plugin wants to listen to. The key of each
-     *     array section is the event that the plugin listens to
-     *     and the value (in the form of an array) contains the
-     *     callable (or function) as well as the priority. The
-     *     higher the number the higher the priority.
-     */
-    public static function getSubscribedEvents()
-    {
+    public static function getSubscribedEvents() {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
@@ -34,8 +23,7 @@ class GystPlugin extends Plugin
     /**
      * Initialize the plugin
      */
-    public function onPluginsInitialized()
-    {
+    public function onPluginsInitialized() {
         // Don't proceed if we are in the admin plugin
         if ($this->isAdmin()) {
             return;
@@ -86,6 +74,7 @@ class GystPlugin extends Plugin
 		dump($this->grav['page']->header($this->grav['page']->header())); $this->grav['page']->save(); exit;
 		*/
 		$params = $event['params'];
+		$diagnostics = ( array_key_exists('dump', $params) AND $params['dump'] != FALSE );
 
 		$format = array_key_exists('dateformat', $params) ? $params['dateformat'] : 'Ymd-His-u';
 
@@ -106,10 +95,14 @@ class GystPlugin extends Plugin
 		$twig->itemData = $form->getData(); // TODO: kill if we don't need this
 
 		$provider_options = $this->getProviderOptions($params['provider']);
-		// dump($provider_options); exit;
+		if ($diagnostics) {
+			dump($provider_options);
+		}
 
 		$sheets = new GoogleSpreadsheetCollection($provider_options); // TODO: abstract for any supported provider
-		// dump($sheets); exit;
+		if ($diagnostics) {
+			dump($sheets);
+		}
 
 		// dump($sheets->spreadsheets->create($spreadsheet)); exit;
 		// try     public function modifyHeader($key, $value) # https://github.com/getgrav/grav/blob/8678f22f6bf94e0a5c862f864e5a3d06cc31dd07/system/src/Grav/Common/Page/Page.php#L487
@@ -128,7 +121,9 @@ class GystPlugin extends Plugin
 			$sheet_titles[] = $s['properties']['title'];
 		}
 		$new_sheet = (array_search($sheetname, $sheet_titles) === FALSE);
-		// dump($sheet_titles);
+		if ($diagnostics) {
+			dump($sheet_titles);
+		}
 
 		$fields_param = array_key_exists('fields', $params) ? $params['fields'] : [];
 		$fields = $this->getOutputFields($form['fields'], $fields_param);
@@ -175,10 +170,11 @@ class GystPlugin extends Plugin
 			'insertDataOption' => 'INSERT_ROWS',
 			]);
 
-		if (array_key_exists('dump', $params) AND $params['dump'] != FALSE) {
+		if ($diagnostics) {
 			printf("%d rows appended.<br/>", $result->getUpdates()->getUpdatedRows());
 			dump($sheets->spreadsheets_values->get($ssid, $sheetname)['values']);
-			dump($sheets->spreadsheets->get($ssid)); exit;
+			dump($sheets->spreadsheets->get($ssid));
+			exit; // without this, the test form redirects, losing diagnostic output
 		}
 	}
 
